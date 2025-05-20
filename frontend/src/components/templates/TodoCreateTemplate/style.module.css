@@ -1,0 +1,19 @@
+.error > span {
+  color: red;
+}
+
+.content {
+  margin-top: 20px;
+}
+
+h1.title {
+  text-align: center;
+  font-family: Times New Roman, Times, serif;
+  color: #fff;
+  font-size: 48px;
+}
+
+.container {
+  width: 80%;
+  margin: 40px auto;
+}
