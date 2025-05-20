@@ -8,6 +8,8 @@ export class Todo {
   @Field()
   title: string;
 
-  @Field({ nullable: true })
-  content?: string;
+  @Field(() => String, {
+    nullable: true,
+  })
+  content: string | null;
 }

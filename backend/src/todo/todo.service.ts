@@ -1,23 +1,23 @@
 import { Injectable } from '@nestjs/common';
 import { Todo } from './models/todo.model';
 import { CreateTodoInput } from './dto/createTodo.input';
+import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
 export class TodoService {
-  todos: Todo[] = [];
+  constructor(private readonly prismaService: PrismaService) {}
 
-  getTodos(): Todo[] {
-    return this.todos;
+  async getTodos(): Promise<Todo[]> {
+    return await this.prismaService.todo.findMany();
   }
 
-  createTodo(createTodoInput: CreateTodoInput): Todo {
+  async createTodo(createTodoInput: CreateTodoInput): Promise<Todo> {
     const { title, content } = createTodoInput;
-    const newTodo = new Todo();
-    newTodo.id = this.todos.length + 1;
-    newTodo.title = title;
-    newTodo.content = content;
-
-    this.todos.push(newTodo);
-    return newTodo;
+    return await this.prismaService.todo.create({
+      data: {
+        title,
+        content,
+      },
+    });
   }
 }
