@@ -9,5 +9,5 @@ export class Todo {
   title: string;
 
   @Field({ nullable: true })
-  content: string;
+  content?: string;
 }

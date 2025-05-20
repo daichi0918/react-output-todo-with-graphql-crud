@@ -6,10 +6,16 @@ export class TodoService {
   todos: Todo[] = [];
 
   getTodos(): Todo[] {
-    const todo1 = new Todo();
-    todo1.id = 1;
-    todo1.title = 'todo1';
-    this.todos.push(todo1);
     return this.todos;
+  }
+
+  createTodo(title: string, content?: string): Todo {
+    const newTodo = new Todo();
+    newTodo.id = this.todos.length + 1;
+    newTodo.title = title;
+    newTodo.content = content;
+
+    this.todos.push(newTodo);
+    return newTodo;
   }
 }

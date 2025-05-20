@@ -11,3 +11,7 @@ type Todo {
 type Query {
   getTodos: [Todo]!
 }
+
+type Mutation {
+  createTodo(title: String!, content: String): Todo!
+}
