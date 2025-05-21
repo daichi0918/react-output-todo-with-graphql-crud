@@ -3,8 +3,8 @@
  *
  * @package organisms
  */
-import style from './styles.module.css';
-import type { TodoType } from '../../../const';
+import style from './style.module.css';
+import type { TodoType } from '../../../type';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   // faFile,

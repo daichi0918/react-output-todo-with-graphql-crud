@@ -1,5 +1,5 @@
 import type { FC, ComponentProps } from 'react';
-import styles from './styles.module.css';
+import styles from './style.module.css';
 import { TextAreaForm } from '../../atoms/TextAreaForm';
 
 type TextAreaProps = ComponentProps<'textarea'> & {

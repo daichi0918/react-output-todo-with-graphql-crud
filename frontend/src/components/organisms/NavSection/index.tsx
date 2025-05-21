@@ -3,7 +3,7 @@
  *
  * @package organisms
  */
-import style from './styles.module.css';
+import style from './style.module.css';
 import { Link } from 'react-router-dom';
 
 /**

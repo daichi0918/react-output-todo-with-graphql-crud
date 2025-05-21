@@ -8,6 +8,7 @@ import { InputForm } from '../../atoms/InputForm';
 import { PageContainer } from '../../layouts/PageContainer';
 import { NavSection } from '../../organisms/NavSection';
 import { TodoList } from '../../organisms/TodoList';
+// import { TodoList } from '../../organisms/TodoList';
 import style from './style.module.css';
 
 /**
@@ -16,8 +17,8 @@ import style from './style.module.css';
 export const TodoTopTemplate = () => {
   const {
     searchKeyWord,
-    handleSearchKeyWordInput,
     showTodoList,
+    handleSearchKeyWordInput,
     handleDeleteTodoTask,
     goToDetailPage,
     goToEditPage,

@@ -4,7 +4,7 @@
  * @package atoms
  */
 import type { JSX } from 'react';
-import style from './styles.module.css';
+import style from './style.module.css';
 
 type Button = {
   buttonName: string;
