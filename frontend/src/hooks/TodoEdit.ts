@@ -3,12 +3,15 @@
  *
  * @packge hooks
  */
-import { useContext, useMemo } from 'react';
-// import { TodoContext } from '../contexts/TodoContext';
 import { useNavigate, useParams } from 'react-router';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useMutation, useQuery } from '@apollo/client';
+import type { TodoType } from '../type';
+import { GET_TODO, GET_TODOS } from '../queries/todoQueries';
+import { UPDATE_TODO } from '../mutations/todoMutation';
+import { useEffect } from 'react';
 
 const schema = z.object({
   title: z
@@ -31,45 +34,46 @@ type FormInput = z.infer<typeof schema>;
  */
 export const useTodoEdit = () => {
   const navigate = useNavigate();
-
   const { id } = useParams();
+  const [updateTodo] = useMutation<{ updateTodo: TodoType }>(UPDATE_TODO);
   /**
    * state定義
    */
-  const {
-    originalTodoList,
-    setOriginalTodoList,
-    todoListLength,
-    setTodoListLength,
-  } = useContext(TodoContext);
 
   // 該当のtodoを取得
-  const todo = useMemo(
-    () => originalTodoList.find((todo) => String(todo.id) === id),
-    [id, originalTodoList]
-  );
+  const { data } = useQuery<{ getTodo: TodoType }>(GET_TODO, {
+    variables: { id: Number(id) },
+  });
   const {
     handleSubmit,
     control,
+    reset,
     formState: { errors },
   } = useForm<FormInput>({
     resolver: zodResolver(schema),
-    defaultValues: { title: todo?.title, content: todo?.content },
+    defaultValues: {
+      title: '',
+      content: '',
+    },
   });
 
+  useEffect(() => {
+    if (data?.getTodo) {
+      reset({
+        title: data.getTodo.title,
+        content: data.getTodo.content ?? '',
+      });
+    }
+  }, [data, reset]);
+
   const onSubmit = async (data: FormInput) => {
-    const { title, content } = data;
-    const newId = todoListLength + 1;
-    const newTodoList = [
-      ...originalTodoList,
-      {
-        id: newId,
-        title: title,
-        content: content,
+    await updateTodo({
+      variables: {
+        updateTodoInput: { id: Number(id), ...data },
       },
-    ];
-    setOriginalTodoList(newTodoList);
-    setTodoListLength(newId);
+      refetchQueries: [{ query: GET_TODOS }],
+    });
+    reset();
     navigate('/');
   };
 

@@ -14,6 +14,13 @@ export class TodoResolver {
     return await this.todoService.getTodos();
   }
 
+  @Query(() => TodoModel, { nullable: true })
+  async getTodo(
+    @Args('id', { type: () => Int }) id: number,
+  ): Promise<Todo | null> {
+    return await this.todoService.getTodo(id);
+  }
+
   @Mutation(() => TodoModel)
   async createTodo(
     @Args('createTodoInput') createTodoInput: CreateTodoInput,

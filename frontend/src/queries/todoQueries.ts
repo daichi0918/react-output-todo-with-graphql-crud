@@ -9,3 +9,12 @@ export const GET_TODOS = gql`
     }
   }
 `;
+export const GET_TODO = gql`
+  query GetTodo($id: Int!) {
+    getTodo(id: $id) {
+      id
+      title
+      content
+    }
+  }
+`;

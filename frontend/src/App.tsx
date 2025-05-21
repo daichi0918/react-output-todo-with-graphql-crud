@@ -1,8 +1,7 @@
 import './App.css';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { TodoTopPage } from './components/pages/TodoTopPage';
-// import { TodoCreatePage } from './components/pages/TodoCreatePage';
-// import { TodoEditPage } from './components/pages/TodoEditPage';
+import { TodoEditPage } from './components/pages/TodoEditPage';
 import client from './apolloClient';
 import { ApolloProvider } from '@apollo/client';
 import { TodoProvider } from './contexts/TodoContext';
@@ -17,7 +16,7 @@ function App() {
             <Routes>
               <Route path="/" element={<TodoTopPage />} />
               <Route path="/create" element={<TodoCreatePage />} />
-              {/* <Route path="/edit/:id" element={<TodoEditPage />} /> */}
+              <Route path="/edit/:id" element={<TodoEditPage />} />
             </Routes>
           </BrowserRouter>
         </TodoProvider>

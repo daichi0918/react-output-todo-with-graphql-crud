@@ -50,7 +50,7 @@ export const useTodoTop = () => {
    * @param { string } taskName
    */
   const handleDeleteTodoTask = async (targetId: number, taskName: string) => {
-    if (window.confirm(`「${targetId}:${taskName}」を削除していいですか？`)) {
+    if (window.confirm(`「${taskName}」を削除していいですか？`)) {
       await deleteTodo({
         variables: { id: targetId },
         refetchQueries: [{ query: GET_TODOS }],

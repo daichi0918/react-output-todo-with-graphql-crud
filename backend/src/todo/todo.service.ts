@@ -22,6 +22,12 @@ export class TodoService {
     });
   }
 
+  async getTodo(id: number): Promise<Todo | null> {
+    return await this.prismaService.todo.findUnique({
+      where: { id },
+    });
+  }
+
   async updateTodo(updateTaskInput: UpdateTodoInput): Promise<Todo> {
     const { id, title, content } = updateTaskInput;
     return await this.prismaService.todo.update({

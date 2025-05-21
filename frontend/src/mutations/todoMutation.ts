@@ -11,8 +11,8 @@ export const CREATE_TODO = gql`
 `;
 
 export const UPDATE_TODO = gql`
-  mutation createTodo($createTodoInput: CreateTodoInput!) {
-    createTodo(createTodoInput: $createTodoInput) {
+  mutation updateTodo($updateTodoInput: UpdateTodoInput!) {
+    updateTodo(updateTodoInput: $updateTodoInput) {
       id
       title
       content
