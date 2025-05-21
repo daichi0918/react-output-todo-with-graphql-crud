@@ -8,12 +8,16 @@ import { useContext, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { TodoContext } from '../contexts/TodoContext';
 import type { TodoType } from '../type';
+import { useMutation } from '@apollo/client';
+import { DELETE_TODO } from '../mutations/todoMutation';
+import { GET_TODOS } from '../queries/todoQueries';
 
 /**
  * useTodoTop
  */
 export const useTodoTop = () => {
   const navigate = useNavigate();
+  const [deleteTodo] = useMutation<{ deleteTask: number }>(DELETE_TODO);
   /**
    * state定義
    */
@@ -45,12 +49,17 @@ export const useTodoTop = () => {
    * @param { number } targetId
    * @param { string } taskName
    */
-  const handleDeleteTodoTask = (targetId: number, taskName: string) => {
-    if (window.confirm(`「${taskName}」を削除していいですか？`)) {
-      const newTodoList = originalTodoList.filter(
-        (todo: TodoType) => todo.id !== targetId
-      );
-      setOriginalTodoList(newTodoList);
+  const handleDeleteTodoTask = async (targetId: number, taskName: string) => {
+    if (window.confirm(`「${targetId}:${taskName}」を削除していいですか？`)) {
+      await deleteTodo({
+        variables: { id: targetId },
+        refetchQueries: [{ query: GET_TODOS }],
+      });
+      // if (typeof id !== 'number') return;
+      // const newTodoList = originalTodoList.filter(
+      //   (todo: TodoType) => todo.id !== targetId
+      // );
+      // setOriginalTodoList(newTodoList);
     }
   };
   /**

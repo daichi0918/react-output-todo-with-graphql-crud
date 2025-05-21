@@ -6,6 +6,7 @@ import { TodoTopPage } from './components/pages/TodoTopPage';
 import client from './apolloClient';
 import { ApolloProvider } from '@apollo/client';
 import { TodoProvider } from './contexts/TodoContext';
+import { TodoCreatePage } from './components/pages/TodoCreatePage';
 
 function App() {
   return (
@@ -15,8 +16,8 @@ function App() {
           <BrowserRouter>
             <Routes>
               <Route path="/" element={<TodoTopPage />} />
-              {/* <Route path="/create" element={<TodoCreatePage />} />
-            <Route path="/edit/:id" element={<TodoEditPage />} /> */}
+              <Route path="/create" element={<TodoCreatePage />} />
+              {/* <Route path="/edit/:id" element={<TodoEditPage />} /> */}
             </Routes>
           </BrowserRouter>
         </TodoProvider>

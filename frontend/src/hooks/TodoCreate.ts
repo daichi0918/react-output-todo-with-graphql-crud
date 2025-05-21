@@ -4,22 +4,26 @@
  * @packge hooks
  */
 
-import { useContext } from 'react';
 import { useNavigate } from 'react-router';
 // import { TodoContext } from '../contexts/TodoContext';
-import { FieldErrors, UseFormRegister, useForm } from 'react-hook-form';
+import {
+  type FieldErrors,
+  type UseFormRegister,
+  useForm,
+} from 'react-hook-form';
 import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { CREATE_TODO } from '../mutations/todoMutation';
+import { useMutation } from '@apollo/client';
+import type { TodoType } from '../type';
+import { GET_TODOS } from '../queries/todoQueries';
 
 const schema = z.object({
   title: z
     .string()
     .min(1, 'titleを入力してください')
     .max(20, '20文字以内で入力してください'),
-  content: z
-    .string()
-    .min(1, 'contentを入力してください')
-    .max(100, '100文字以内で入力してください'),
+  content: z.string().optional(),
 });
 
 type FormInput = z.infer<typeof schema>;
@@ -40,6 +44,7 @@ type UseTodoCreateReturn = () => {
  */
 export const useTodoCreate: UseTodoCreateReturn = () => {
   const navigate = useNavigate();
+  const [createTodo] = useMutation<{ createTodo: TodoType }>(CREATE_TODO);
   const {
     handleSubmit,
     reset,
@@ -50,26 +55,31 @@ export const useTodoCreate: UseTodoCreateReturn = () => {
     defaultValues: DEFAULT_FROM_INPUT,
   });
 
-  const {
-    originalTodoList,
-    setOriginalTodoList,
-    todoListLength,
-    setTodoListLength,
-  } = useContext(TodoContext);
+  // const {
+  //   originalTodoList,
+  //   setOriginalTodoList,
+  //   todoListLength,
+  //   setTodoListLength,
+  // } = useContext(TodoContext);
 
   const onSubmit = async (data: FormInput) => {
-    const { title, content } = data;
-    const newId = todoListLength + 1;
-    const newTodoList = [
-      ...originalTodoList,
-      {
-        id: newId,
-        title: title,
-        content: content,
+    // const newId = todoListLength + 1;
+    // const newTodoList = [
+    //   ...originalTodoList,
+    //   {
+    //     id: newId,
+    //     title: title,
+    //     content: content,
+    //   },
+    // ];
+    // setOriginalTodoList(newTodoList);
+    // setTodoListLength(newId);
+    await createTodo({
+      variables: {
+        createTodoInput: data,
       },
-    ];
-    setOriginalTodoList(newTodoList);
-    setTodoListLength(newId);
+      refetchQueries: [{ query: GET_TODOS }],
+    });
     reset();
     navigate('/');
   };

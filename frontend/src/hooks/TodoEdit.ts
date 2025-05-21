@@ -15,10 +15,7 @@ const schema = z.object({
     .string()
     .min(1, 'titleを入力してください')
     .max(20, '20文字以内で入力してください'),
-  content: z
-    .string()
-    .min(1, 'contentを入力してください')
-    .max(100, '100文字以内で入力してください'),
+  content: z.string().optional(),
 });
 
 type FormInput = z.infer<typeof schema>;

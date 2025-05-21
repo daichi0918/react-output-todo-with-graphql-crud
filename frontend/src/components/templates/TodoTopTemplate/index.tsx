@@ -8,7 +8,6 @@ import { InputForm } from '../../atoms/InputForm';
 import { PageContainer } from '../../layouts/PageContainer';
 import { NavSection } from '../../organisms/NavSection';
 import { TodoList } from '../../organisms/TodoList';
-// import { TodoList } from '../../organisms/TodoList';
 import style from './style.module.css';
 
 /**
