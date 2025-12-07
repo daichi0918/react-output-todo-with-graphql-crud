@@ -7,10 +7,11 @@ import { useNavigate, useParams } from 'react-router';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useMutation, useQuery } from '@apollo/client';
-import type { TodoType } from '../type';
-import { GET_TODO, GET_TODOS } from '../queries/todoQueries';
-import { UPDATE_TODO } from '../mutations/todoMutation';
+import {
+  GetTodosDocument,
+  useGetTodoQuery,
+  useUpdateTodoMutation,
+} from '../gql/graphql';
 import { useEffect } from 'react';
 
 const schema = z.object({
@@ -35,13 +36,13 @@ type FormInput = z.infer<typeof schema>;
 export const useTodoEdit = () => {
   const navigate = useNavigate();
   const { id } = useParams();
-  const [updateTodo] = useMutation<{ updateTodo: TodoType }>(UPDATE_TODO);
+  const [updateTodo] = useUpdateTodoMutation();
   /**
    * state定義
    */
 
   // 該当のtodoを取得
-  const { data } = useQuery<{ getTodo: TodoType }>(GET_TODO, {
+  const { data } = useGetTodoQuery({
     variables: { id: Number(id) },
   });
   const {
@@ -71,7 +72,7 @@ export const useTodoEdit = () => {
       variables: {
         updateTodoInput: { id: Number(id), ...data },
       },
-      refetchQueries: [{ query: GET_TODOS }],
+      refetchQueries: [{ query: GetTodosDocument }],
     });
     reset();
     navigate('/');

@@ -6,17 +6,10 @@
 
 import { useNavigate } from 'react-router';
 // import { TodoContext } from '../contexts/TodoContext';
-import {
-  type FieldErrors,
-  type UseFormRegister,
-  useForm,
-} from 'react-hook-form';
+import { type FieldErrors, type UseFormRegister, useForm } from 'react-hook-form';
 import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { CREATE_TODO } from '../mutations/todoMutation';
-import { useMutation } from '@apollo/client';
-import type { TodoType } from '../type';
-import { GET_TODOS } from '../queries/todoQueries';
+import { GetTodosDocument, useCreateTodoMutation } from '../gql/graphql';
 
 const schema = z.object({
   title: z
@@ -44,7 +37,7 @@ type UseTodoCreateReturn = () => {
  */
 export const useTodoCreate: UseTodoCreateReturn = () => {
   const navigate = useNavigate();
-  const [createTodo] = useMutation<{ createTodo: TodoType }>(CREATE_TODO);
+  const [createTodo] = useCreateTodoMutation();
   const {
     handleSubmit,
     reset,
@@ -78,7 +71,7 @@ export const useTodoCreate: UseTodoCreateReturn = () => {
       variables: {
         createTodoInput: data,
       },
-      refetchQueries: [{ query: GET_TODOS }],
+      refetchQueries: [{ query: GetTodosDocument }],
     });
     reset();
     navigate('/');

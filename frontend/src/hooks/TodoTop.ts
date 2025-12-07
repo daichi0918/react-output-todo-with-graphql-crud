@@ -7,17 +7,14 @@
 import { useContext, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { TodoContext } from '../contexts/TodoContext';
-import type { TodoType } from '../type';
-import { useMutation } from '@apollo/client';
-import { DELETE_TODO } from '../mutations/todoMutation';
-import { GET_TODOS } from '../queries/todoQueries';
+import { GetTodosDocument, useDeleteTodoMutation, type Todo } from '../gql/graphql';
 
 /**
  * useTodoTop
  */
 export const useTodoTop = () => {
   const navigate = useNavigate();
-  const [deleteTodo] = useMutation<{ deleteTask: number }>(DELETE_TODO);
+  const [deleteTodo] = useDeleteTodoMutation();
   /**
    * state定義
    */
@@ -38,7 +35,7 @@ export const useTodoTop = () => {
    * 表示用TodoList
    */
   const showTodoList = useMemo(() => {
-    return originalTodoList.filter((todo: TodoType) => {
+    return originalTodoList.filter((todo: Todo) => {
       const regexp = new RegExp('^' + searchKeyWord, 'i');
       return todo.title.match(regexp);
     });
@@ -53,7 +50,7 @@ export const useTodoTop = () => {
     if (window.confirm(`「${taskName}」を削除していいですか？`)) {
       await deleteTodo({
         variables: { id: targetId },
-        refetchQueries: [{ query: GET_TODOS }],
+        refetchQueries: [{ query: GetTodosDocument }],
       });
       // if (typeof id !== 'number') return;
       // const newTodoList = originalTodoList.filter(
